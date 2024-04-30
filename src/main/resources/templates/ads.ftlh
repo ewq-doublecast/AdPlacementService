@@ -13,16 +13,19 @@
 </form>
 <hr>
 <#list ads as ad>
-    <div>
-        Название: ${ad.title} |
-        Описание: ${ad.description} |
-        Город: ${ad.city} |
-        Цена: ${ad.price} |
-        Автор: ${ad.author} |
-        <a href="/ad/${ad.id}">Подробнее</a>
-    </div>
-<#else>
-    <div>Товаров нет</div>
+    <#if ad??>
+        <div>
+            <img src="/images/${ad.previewImageId}" alt="" height="60px">
+            Название: ${ad.title} |
+            Описание: ${ad.description} |
+            Город: ${ad.city} |
+            Цена: ${ad.price} |
+            Автор: ${ad.author} |
+            <a href="/ad/${ad.id}">Подробнее</a>
+        </div>
+    <#else>
+        <div>Товаров нет</div>
+    </#if>
 </#list>
 <hr>
 <a href="/ad/create">Создать</a>

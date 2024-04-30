@@ -7,6 +7,9 @@
 <body>
 <h1>Подробная информация</h1>
 <hr>
+<#list images as img>
+    <img src="/images/${img.id}" height="60px"/><br><br>
+</#list>
 <div>
     Название: ${ad.title} <br>
     Описание: ${ad.description} <br>
