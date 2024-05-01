@@ -15,7 +15,7 @@
     Описание: ${ad.description} <br>
     Город: ${ad.city} <br>
     Цена: ${ad.price} <br>
-    Автор: ${ad.user.firstName} <br>
+    Автор: <a href="/user/${ad.user.id}">${ad.user.firstName}</a> <br>
 </div>
 <hr>
 <form action="/ad/delete/${ad.id}" method="post">

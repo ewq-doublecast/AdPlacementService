@@ -52,6 +52,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Ad> ads = new ArrayList<>();
 

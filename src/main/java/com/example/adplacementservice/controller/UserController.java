@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -31,8 +32,14 @@ public class UserController {
             model.addAttribute("errorMessage", "Пользователь с email: " + user.getEmail() + " уже существует");
             return "registration";
         }
-        
+
         return "redirect:/login";
     }
 
+    @GetMapping("/user/{user}")
+    public String user(@PathVariable User user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("ads", user.getAds());
+        return "user";
+    }
 }
