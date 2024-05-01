@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @Column(name = "rating")
+    private double rating;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image avatar;
@@ -58,6 +61,9 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Ad> ads = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author")
+    private List<Review> reviews = new ArrayList<>();
 
     @PrePersist
     private void init() {

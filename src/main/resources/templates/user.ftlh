@@ -6,9 +6,10 @@
 <body>
 <h1>Сервис размещения объявлений</h1>
 <hr>
-<h3>Подробная информация о пользователе ${user.firstName}</h3>
-<b>Номер телефона: </b> ${user.phoneNumber}<br>
-<b>Email: </b> ${user.email}<br>
+<div>Подробная информация о пользователе: ${user.firstName}</div>
+<div>Номер телефона:</div> ${user.phoneNumber}<br>
+<div>Email:</div> ${user.email}<br>
+<div>Средний рейтинг пользователя: ${user.rating}</div>
 <h4>Товары пользователя ${user.firstName}</h4>
 <#list ads as ad>
     <div>

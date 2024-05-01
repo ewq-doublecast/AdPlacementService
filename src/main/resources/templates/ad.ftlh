@@ -18,6 +18,10 @@
     Автор: <a href="/user/${ad.user.id}">${ad.user.firstName}</a> <br>
 </div>
 <hr>
+<form action="/review/create/${ad.id}" method="get">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="submit" value="Оставить отзыв"/>
+</form>
 <form action="/ad/delete/${ad.id}" method="post">
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Удалить"/>

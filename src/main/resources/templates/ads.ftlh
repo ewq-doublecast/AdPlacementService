@@ -26,7 +26,7 @@
 </form>
 <hr>
 <#list ads as ad>
-    <#if ad??>
+    <#if ad.onModeration == false>
         <div>
             <img src="/images/${ad.previewImageId}" alt="" height="60px">
             Название: ${ad.title} |

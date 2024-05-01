@@ -1,7 +1,9 @@
 package com.example.adplacementservice.controller;
 
 import com.example.adplacementservice.model.Ad;
+import com.example.adplacementservice.model.Category;
 import com.example.adplacementservice.service.AdService;
+import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,19 +12,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class AdController {
 
     private final AdService adService;
+    private final UserService userService;
 
     @GetMapping("/")
     public String ads(@RequestParam(name = "title", required = false) String title,
                       Model model,
                       Principal principal) {
         model.addAttribute("ads", adService.getAllAds(title));
-        model.addAttribute("user", adService.getUserByPrincipal(principal));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "ads";
     }
 
@@ -35,7 +39,9 @@ public class AdController {
     }
 
     @GetMapping("/ad/create")
-    public String create() {
+    public String create(Model model) {
+        List<Category> categories = adService.getAllCategories();
+        model.addAttribute("categories", categories);
         return "create-ad";
     }
 

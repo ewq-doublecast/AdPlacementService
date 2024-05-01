@@ -45,6 +45,20 @@ public class Ad {
     @Column(name = "preview_image_id")
     private Integer previewImageId;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
+    private Review review;
+
+    @Column(name = "review_written")
+    private boolean reviewHasBeenWritten;
+
+    @Column(name = "on_moderation")
+    private boolean onModeration;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
+    private Category category;
+
     @PrePersist
     private void init() {
         createdAt = LocalDateTime.now();

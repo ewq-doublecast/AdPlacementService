@@ -10,6 +10,12 @@
     Описание: <input type="text" name="description"/><br>
     Город: <input type="text" name="city"/><br>
     Цена: <input type="number" name="price"/><br>
+    Категория:
+    <select name="category">
+        <#list categories as category>
+            <option value="${category.id}">${category.name}</option>
+        </#list>
+    </select>
     Первая фотография: <input type="file" name="file1"/><br><br>
     Вторая фотография: <input type="file" name="file2"/><br><br>
     Третья фотография: <input type="file" name="file3"/><br><br>
