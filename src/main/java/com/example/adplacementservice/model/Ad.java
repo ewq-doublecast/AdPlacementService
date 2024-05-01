@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,17 +32,23 @@ public class Ad {
     @Column(name = "price")
     private Integer price;
 
-    @Column(name = "author")
-    private String author;
-
     @Column(name = "created_at")
-    @CreatedDate
     private LocalDateTime createdAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ad")
     private List<Image> images = new ArrayList<>();
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn
+    private User user;
+
+    @Column(name = "preview_image_id")
     private Integer previewImageId;
+
+    @PrePersist
+    private void init() {
+        createdAt = LocalDateTime.now();
+    }
 
     public void addImage(Image image) {
         image.setAd(this);

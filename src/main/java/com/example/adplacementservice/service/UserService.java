@@ -30,6 +30,9 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByEmail(userEmail) != null)
             return false;
 
+        if (userRepository.findByPhoneNumber(user.getPhoneNumber()) != null)
+            return false;
+
         user.setActive(true);
         user.getRoles().add(Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -37,5 +40,5 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         return true;
     }
-    
+
 }

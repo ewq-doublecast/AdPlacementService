@@ -4,6 +4,7 @@ import com.example.adplacementservice.model.User;
 import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +26,13 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute User user) {
-        userService.save(user);
+    public String registration(@ModelAttribute User user, Model model) {
+        if (!userService.save(user)) {
+            model.addAttribute("errorMessage", "Пользователь с email: " + user.getEmail() + " уже существует");
+            return "registration";
+        }
+        
         return "redirect:/login";
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
 }

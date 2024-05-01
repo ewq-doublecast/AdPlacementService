@@ -15,10 +15,11 @@
     Описание: ${ad.description} <br>
     Город: ${ad.city} <br>
     Цена: ${ad.price} <br>
-    Автор: ${ad.author} <br>
+    Автор: ${ad.user.firstName} <br>
 </div>
 <hr>
 <form action="/ad/delete/${ad.id}" method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Удалить"/>
 </form>
 </body>

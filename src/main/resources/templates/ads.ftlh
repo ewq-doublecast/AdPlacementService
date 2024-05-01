@@ -6,9 +6,19 @@
 </head>
 <body>
 <h1>Сервис размещения объявлений</h1>
+<#if user.email??>
+    <h3>Имя: ${user.firstName}</h3>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Выйти"/>
+    </form>
+<#else>
+    <a href="/login">Войти</a>
+</#if>
 <hr>
 <form action="/" method="get">
     Поиск по названию объявления: <input type="text" name="title"><br>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Поиск"/>
 </form>
 <hr>
@@ -17,10 +27,8 @@
         <div>
             <img src="/images/${ad.previewImageId}" alt="" height="60px">
             Название: ${ad.title} |
-            Описание: ${ad.description} |
             Город: ${ad.city} |
             Цена: ${ad.price} |
-            Автор: ${ad.author} |
             <a href="/ad/${ad.id}">Подробнее</a>
         </div>
     <#else>

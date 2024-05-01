@@ -3,13 +3,16 @@ package com.example.adplacementservice.service;
 import com.example.adplacementservice.mapper.ImageMapper;
 import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Image;
+import com.example.adplacementservice.model.User;
 import com.example.adplacementservice.repository.AdRepository;
+import com.example.adplacementservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -20,7 +23,10 @@ public class AdService {
     private final AdRepository adRepository;
     private final ImageMapper imageMapper;
 
-    public void save(Ad ad, MultipartFile file1, MultipartFile file2, MultipartFile file3) throws IOException {
+    private final UserRepository userRepository;
+
+    public void save(Ad ad, MultipartFile file1, MultipartFile file2, MultipartFile file3, Principal principal) throws IOException {
+        ad.setUser(getUserByPrincipal(principal));
         Image image1;
         Image image2;
         Image image3;
@@ -37,10 +43,17 @@ public class AdService {
             image3 = imageMapper.toEntity(file3);
             ad.addImage(image3);
         }
-        log.info("Saving new Ad. Title: {}; Author: {}", ad.getTitle(), ad.getAuthor());
+        log.info("Saving new Ad. Title: {}; Author: {}", ad.getTitle(), ad.getUser().getFirstName());
         Ad adFromDb = adRepository.save(ad);
         adFromDb.setPreviewImageId(adFromDb.getImages().get(0).getId());
         adRepository.save(ad);
+    }
+
+    public User getUserByPrincipal(Principal principal) {
+        if (principal == null)
+            return new User();
+
+        return userRepository.findByEmail(principal.getName());
     }
 
     public List<Ad> getAllAds(String title) {
