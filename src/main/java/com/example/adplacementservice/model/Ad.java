@@ -38,26 +38,22 @@ public class Ad {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ad")
     private List<Image> images = new ArrayList<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn
-    private User user;
-
     @Column(name = "preview_image_id")
     private Integer previewImageId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Review review;
-
-    @Column(name = "review_written")
-    private boolean reviewHasBeenWritten;
+    private User user;
 
     @Column(name = "on_moderation")
     private boolean onModeration;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private Category category;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "ad")
+    private Deal deal;
 
     @PrePersist
     private void init() {

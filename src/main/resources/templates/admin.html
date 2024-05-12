@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Сервис размещения объявлений</title>
+</head>
+<body>
+<h1>Сервис размещения объявлений</h1>
+<hr>
+<h4>Панель администратора</h4>
+<table border="1" th:if="${not #lists.isEmpty(ads)}">
+    <thead>
+    <tr>
+        <th>Название объявления</th>
+        <th>Подробная информация</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ad : ${ads}" th:if="${ad.onModeration}">
+        <td th:text="${ad.title}"></td>
+        <td><a th:href="@{/ad/read/{id}(id=${ad.id})}">Подробная информация</a></td>
+    </tr>
+    </tbody>
+</table>
+<div th:if="${#lists.isEmpty(ads)}">
+    <h3>Объявлений на модерацию нет</h3>
+</div>
+</body>
+</html>

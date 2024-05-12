@@ -9,4 +9,6 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
 
     List<Ad> findByTitle(String title);
 
+    List<Ad> findByOnModerationIsTrue();
+
 }

@@ -22,7 +22,7 @@ public class Review {
     private Integer rating;
 
     @Column(name = "text")
-    private String text;
+    private String description;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

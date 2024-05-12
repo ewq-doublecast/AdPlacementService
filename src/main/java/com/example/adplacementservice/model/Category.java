@@ -22,7 +22,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "category")
     private List<Ad> ads = new ArrayList<>();
 
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Сервис размещения объявлений</title>
+</head>
+<body>
+<h1>Подробная информация</h1>
+<hr>
+<div th:each="img : ${images}">
+    <img th:src="@{/images/{id}(id=${img.id})}" height="60px"/><br><br>
+</div>
+<div>
+    Название: <span th:text="${ad.title}"></span> <br>
+    Описание: <span th:text="${ad.description}"></span> <br>
+    Город: <span th:text="${ad.city}"></span> <br>
+    Цена: <span th:text="${ad.price}"></span> <br>
+    Автор: <a th:href="@{/user/{userId}(userId=${ad.user.id})}" th:text="${ad.user.firstName}"></a> <br>
+</div>
+<hr>
+<div th:if="${user.isAdmin() && ad.onModeration}">
+    <form th:action="@{/admin/ad/approve/{adId}(adId=${ad.id})}" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Одобрить"/>
+    </form>
+</div>
+<div th:if="${ad.user.getEmail() == user.getEmail()}">
+    <form th:action="@{/ad/edit/{adId}(adId=${ad.id})}" method="get">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Обновить"/>
+    </form>
+    <form th:action="@{/ad/delete/{adId}(adId=${ad.id})}" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Удалить"/>
+    </form>
+</div>
+<div th:if="${(ad.user.getEmail() != user.getEmail()) && (!deal.inProcess())}">
+    <form th:action="@{/ad/buy}" method="post">
+        Выберите способ оплаты:
+        <input type="radio" id="cash" th:value="${paymentMethodCash}" th:field="*{ad.deal.paymentMethod}"/>
+        <label for="cash">Наличные</label>
+        <input type="radio" id="online" th:value="${paymentMethodOnline}" th:field="*{ad.deal.paymentMethod}"/>
+        <label for="online">Картой</label>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Купить"/>
+    </form>
+</div>
+<div th:if="${ad.user.getEmail() == user.getEmail() && (deal.inProcess())}">
+    <form th:action="@{/ad/close}" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Закрыть"/>
+    </form>
+</div>
+</body>
+</html>

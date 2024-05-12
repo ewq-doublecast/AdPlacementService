@@ -26,7 +26,7 @@ public class ReviewController {
     @GetMapping("/review/create/{adId}")
     public String createReview(@PathVariable Integer adId, @ModelAttribute Ad ad, Model model) {
         model.addAttribute("ad", adService.getAd(adId));
-        return "review-create";
+        return "create-review";
     }
 
     @PostMapping("/review/create/{adId}")

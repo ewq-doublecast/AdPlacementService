@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Сервис размещения объявлений</title>
+</head>
+<body>
+<h1>Сервис размещения объявлений</h1>
+<div th:if="${user.email != null}">
+    <h3>Имя: <span th:text="${user.firstName}"></span></h3>
+    <form action="/logout" method="post">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <input type="submit" value="Выйти"/>
+    </form>
+    <div th:if="${user.isAdmin()}">
+        <a href="/admin">Панель администратора</a>
+    </div>
+</div>
+<div th:unless="${user.email != null}">
+    <a href="/login">Войти</a>
+</div>
+<hr>
+<form action="/" method="get">
+    Поиск по названию объявления: <input type="text" name="title"><br>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+    <input type="submit" value="Поиск"/>
+</form>
+<hr>
+<div th:each="ad : ${ads}">
+    <div th:if="${!ad.onModeration}">
+        <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt="" height="60px">
+        Название: <span th:text="${ad.title}"></span> |
+        Город: <span th:text="${ad.city}"></span> |
+        Цена: <span th:text="${ad.price}"></span> |
+        <a th:href="@{/ad/read/{id}(id=${ad.id})}">Подробнее</a>
+    </div>
+</div>
+<div th:if="${ads.isEmpty()}">
+    <div>Товаров нет</div>
+</div>
+<hr>
+<a href="/ad/create">Создать</a>
+</body>
+</html>

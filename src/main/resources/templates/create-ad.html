@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Сервис размещения объявлений</title>
 </head>
 <body>
+<h1>Создать объявление</h1>
+<hr>
 <form action="/ad/create" method="post" enctype="multipart/form-data">
     Название: <input type="text" name="title"/><br>
     Описание: <input type="text" name="description"/><br>
@@ -12,14 +14,12 @@
     Цена: <input type="number" name="price"/><br>
     Категория:
     <select name="category">
-        <#list categories as category>
-            <option value="${category.id}">${category.name}</option>
-        </#list>
-    </select>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+    </select><br>
     Первая фотография: <input type="file" name="file1"/><br><br>
     Вторая фотография: <input type="file" name="file2"/><br><br>
     Третья фотография: <input type="file" name="file3"/><br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Создать"/>
 </form>
 </body>

@@ -42,4 +42,5 @@ public class UserController {
         model.addAttribute("ads", user.getAds());
         return "user";
     }
+
 }

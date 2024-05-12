@@ -1,33 +1,31 @@
 package com.example.adplacementservice.controller;
 
-import com.example.adplacementservice.model.User;
-import com.example.adplacementservice.model.enums.Role;
-import com.example.adplacementservice.service.UserService;
+import com.example.adplacementservice.service.AdService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
-    private final UserService userService;
+    private final AdService adService;
 
     @GetMapping("/admin")
     public String admin(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("ads", adService.getAdsOnModeration());
         return "admin";
     }
 
-    @GetMapping("/admin/user/edit/{user}")
-    public String userEdit(@PathVariable User user, Model model) {
-        model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
-        return "user-edit";
+    @PostMapping("/admin/ad/approve/{id}")
+    public String approveAd(@PathVariable int id) {
+        adService.approve(id);
+        return "redirect:/admin";
     }
 
 }

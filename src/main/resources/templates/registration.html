@@ -13,11 +13,11 @@
     Эл. почта: <input type="email" name="email"><br><br>
     Номер телефона: <input type="text" name="phoneNumber"><br><br>
     Пароль: <input type="password" name="password"><br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Зарегистрироваться"/>
 </form>
-<#if errorMessage??>
-    <h2 style="color: red">${errorMessage}</h2>
-</#if>
+<div th:if="${errorMessage}">
+    <h2 style="color: red" th:text="${errorMessage}"></h2>
+</div>
 </body>
 </html>

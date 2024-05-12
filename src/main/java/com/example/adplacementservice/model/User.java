@@ -37,9 +37,6 @@ public class User implements UserDetails {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    @Column(name = "is_active")
-    private boolean isActive;
-
     @Column(name = "rating")
     private double rating;
 
@@ -64,6 +61,12 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author")
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "seller")
+    private List<Deal> sellDeals = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "buyer")
+    private List<Deal> buyDeals = new ArrayList<>();
 
     @PrePersist
     private void init() {
@@ -97,6 +100,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return true;
     }
+
 }

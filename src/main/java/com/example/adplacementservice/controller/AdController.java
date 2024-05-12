@@ -2,7 +2,9 @@ package com.example.adplacementservice.controller;
 
 import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Category;
+import com.example.adplacementservice.model.enums.PaymentMethod;
 import com.example.adplacementservice.service.AdService;
+import com.example.adplacementservice.service.DealService;
 import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,22 +22,27 @@ public class AdController {
 
     private final AdService adService;
     private final UserService userService;
+    private final DealService dealService;
 
     @GetMapping("/")
-    public String ads(@RequestParam(name = "title", required = false) String title,
-                      Model model,
-                      Principal principal) {
+    public String readAllAds(@RequestParam(name = "title", required = false) String title,
+                             Model model,
+                             Principal principal) {
         model.addAttribute("ads", adService.getAllAds(title));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        return "ads";
+        return "read-all-ads";
     }
 
-    @GetMapping("/ad/{id}")
-    public String ad(@PathVariable Integer id, Model model) {
+    @GetMapping("/ad/read/{id}")
+    public String readAd(@PathVariable Integer id, Model model, Principal principal) {
         Ad ad = adService.getAd(id);
         model.addAttribute("ad", ad);
         model.addAttribute("images", ad.getImages());
-        return "ad";
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("deal", dealService.getDeal(ad.getDeal().getId()));
+        model.addAttribute("paymentMethodCash", PaymentMethod.CASH);
+        model.addAttribute("paymentMethodOnline", PaymentMethod.ONLINE);
+        return "read-ad";
     }
 
     @GetMapping("/ad/create")
@@ -55,10 +62,45 @@ public class AdController {
         return "redirect:/";
     }
 
+
+    @GetMapping("/ad/edit/{id}")
+    public String updateAd(Model model, @PathVariable Integer id, Principal principal) {
+        Ad ad = adService.getAd(id);
+        List<Category> categories = adService.getAllCategories();
+        model.addAttribute("ad", ad);
+        model.addAttribute("categories", categories);
+        model.addAttribute("images", ad.getImages());
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        return "update-ad";
+    }
+
+    @PostMapping("/ad/edit/{id}")
+    public String updateAd(@ModelAttribute Ad ad,
+                           @PathVariable Integer id,
+                           @RequestParam("file1") MultipartFile file1,
+                           @RequestParam("file2") MultipartFile file2,
+                           @RequestParam("file3") MultipartFile file3,
+                           Principal principal) throws IOException {
+        adService.update(id, ad, file1, file2, file3, principal);
+        return "redirect:/ad/read/" + ad.getId();
+    }
+
     @PostMapping("/ad/delete/{id}")
     public String deleteAd(@PathVariable int id) {
         adService.delete(id);
         return "redirect:/";
+    }
+
+    @PostMapping("/ad/buy")
+    public String buyAd(@ModelAttribute Ad ad, Principal principal) {
+        adService.buyAd(ad, userService.getUserByPrincipal(principal));
+        return "redirect:/ad/read/" + ad.getId();
+    }
+
+    @PostMapping("/ad/close/{id}")
+    public String closeAd(@ModelAttribute Ad ad, Principal principal) {
+        dealService.closeDeal(ad.getId(), userService.getUserByPrincipal(principal));
+        return "redirect:/ad/read/" + ad.getId();
     }
 
 }
