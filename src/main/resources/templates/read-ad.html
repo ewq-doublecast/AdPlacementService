@@ -33,20 +33,7 @@
         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
         <input type="submit" value="Удалить"/>
     </form>
-</div>
-<div th:if="${(ad.user.getEmail() != user.getEmail()) && (!deal.inProcess())}">
-    <form th:action="@{/ad/buy}" method="post">
-        Выберите способ оплаты:
-        <input type="radio" id="cash" th:value="${paymentMethodCash}" th:field="*{ad.deal.paymentMethod}"/>
-        <label for="cash">Наличные</label>
-        <input type="radio" id="online" th:value="${paymentMethodOnline}" th:field="*{ad.deal.paymentMethod}"/>
-        <label for="online">Картой</label>
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Купить"/>
-    </form>
-</div>
-<div th:if="${ad.user.getEmail() == user.getEmail() && (deal.inProcess())}">
-    <form th:action="@{/ad/close}" method="post">
+    <form th:action="@{/ad/close/{adId}(adId=${ad.id})}" method="post">
         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
         <input type="submit" value="Закрыть"/>
     </form>

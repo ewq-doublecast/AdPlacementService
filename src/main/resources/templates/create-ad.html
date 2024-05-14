@@ -8,14 +8,14 @@
 <h1>Создать объявление</h1>
 <hr>
 <form action="/ad/create" method="post" enctype="multipart/form-data">
-    Название: <input type="text" name="title"/><br>
-    Описание: <input type="text" name="description"/><br>
-    Город: <input type="text" name="city"/><br>
-    Цена: <input type="number" name="price"/><br>
+    Название: <input type="text" name="title"/><br><br>
+    Описание: <input type="text" name="description"/><br><br>
+    Город: <input type="text" name="city"/><br><br>
+    Цена: <input type="number" name="price"/><br><br>
     Категория:
     <select name="category">
         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-    </select><br>
+    </select><br><br>
     Первая фотография: <input type="file" name="file1"/><br><br>
     Вторая фотография: <input type="file" name="file2"/><br><br>
     Третья фотография: <input type="file" name="file3"/><br><br>

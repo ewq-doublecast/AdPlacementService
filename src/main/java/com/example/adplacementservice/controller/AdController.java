@@ -2,9 +2,7 @@ package com.example.adplacementservice.controller;
 
 import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Category;
-import com.example.adplacementservice.model.enums.PaymentMethod;
 import com.example.adplacementservice.service.AdService;
-import com.example.adplacementservice.service.DealService;
 import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,6 @@ public class AdController {
 
     private final AdService adService;
     private final UserService userService;
-    private final DealService dealService;
 
     @GetMapping("/")
     public String readAllAds(@RequestParam(name = "title", required = false) String title,
@@ -39,9 +36,6 @@ public class AdController {
         model.addAttribute("ad", ad);
         model.addAttribute("images", ad.getImages());
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("deal", dealService.getDeal(ad.getDeal().getId()));
-        model.addAttribute("paymentMethodCash", PaymentMethod.CASH);
-        model.addAttribute("paymentMethodOnline", PaymentMethod.ONLINE);
         return "read-ad";
     }
 
@@ -89,18 +83,6 @@ public class AdController {
     public String deleteAd(@PathVariable int id) {
         adService.delete(id);
         return "redirect:/";
-    }
-
-    @PostMapping("/ad/buy")
-    public String buyAd(@ModelAttribute Ad ad, Principal principal) {
-        adService.buyAd(ad, userService.getUserByPrincipal(principal));
-        return "redirect:/ad/read/" + ad.getId();
-    }
-
-    @PostMapping("/ad/close/{id}")
-    public String closeAd(@ModelAttribute Ad ad, Principal principal) {
-        dealService.closeDeal(ad.getId(), userService.getUserByPrincipal(principal));
-        return "redirect:/ad/read/" + ad.getId();
     }
 
 }

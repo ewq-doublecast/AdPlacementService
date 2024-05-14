@@ -21,7 +21,7 @@ public class WebSecurityConfig {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/registration", "/ad").permitAll()
+                        .requestMatchers("/", "/registration", "/ad/read/{id}", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

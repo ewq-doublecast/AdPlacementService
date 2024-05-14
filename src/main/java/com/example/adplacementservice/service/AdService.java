@@ -1,11 +1,11 @@
 package com.example.adplacementservice.service;
 
 import com.example.adplacementservice.mapper.ImageMapper;
-import com.example.adplacementservice.model.*;
-import com.example.adplacementservice.model.enums.Status;
+import com.example.adplacementservice.model.Ad;
+import com.example.adplacementservice.model.Category;
+import com.example.adplacementservice.model.Image;
 import com.example.adplacementservice.repository.AdRepository;
 import com.example.adplacementservice.repository.CategoryRepository;
-import com.example.adplacementservice.repository.DealRepository;
 import com.example.adplacementservice.repository.ImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +24,6 @@ public class AdService {
     private final AdRepository adRepository;
     private final CategoryRepository categoryRepository;
     private final ImageMapper imageMapper;
-    private final DealRepository dealRepository;
 
     private final UserService userService;
     private final ImageRepository imageRepository;
@@ -57,12 +55,6 @@ public class AdService {
 
         ad.setOnModeration(true);
 
-        Deal deal = new Deal();
-        deal.setAd(ad);
-        deal.setSeller(ad.getUser());
-        deal.setStatus(Status.ACTIVE);
-        dealRepository.save(deal);
-
         Ad adFromDb = adRepository.save(ad);
         adFromDb.setPreviewImageId(adFromDb.getImages().get(0).getId());
         adRepository.save(adFromDb);
@@ -72,17 +64,7 @@ public class AdService {
         if (title != null)
             return adRepository.findByTitle(title);
 
-        List<Ad> ads = new ArrayList<>();
-
-        List<Ad> allAds = adRepository.findAll();
-
-        for (Ad ad : allAds) {
-            if (ad.getDeal().getStatus() == Status.ACTIVE) {
-                ads.add(ad);
-            }
-        }
-
-        return ads;
+        return adRepository.findAll();
     }
 
     public Ad getAd(int id) {
@@ -160,27 +142,14 @@ public class AdService {
         adRepository.save(adFromDb);
     }
 
-    private void updateImage(List<Image> existingImages, int index, Image image1) {
+    private void updateImage(List<Image> existingImages, int index, Image image) {
         Image existingImage = existingImages.get(index);
-        existingImage.setName(image1.getName());
-        existingImage.setOriginalFileName(image1.getOriginalFileName());
-        existingImage.setSize(image1.getSize());
-        existingImage.setContentType(image1.getContentType());
-        existingImage.setBytes(image1.getBytes());
+        existingImage.setName(image.getName());
+        existingImage.setOriginalFileName(image.getOriginalFileName());
+        existingImage.setSize(image.getSize());
+        existingImage.setContentType(image.getContentType());
+        existingImage.setBytes(image.getBytes());
         imageRepository.save(existingImage);
-    }
-
-    @Transactional
-    public void buyAd(Ad ad, User buyer) {
-        Ad adFromDb = adRepository.findById(ad.getId()).orElseThrow();
-        Deal deal = dealRepository.findById(adFromDb.getDeal().getId()).orElseThrow();
-
-        if (!adFromDb.getUser().getUsername().equals(buyer.getUsername())) {
-            deal.setBuyer(buyer);
-            deal.setPaymentMethod(ad.getDeal().getPaymentMethod());
-            deal.setStatus(Status.IN_PROCESS);
-            dealRepository.save(deal);
-        }
     }
 
 }

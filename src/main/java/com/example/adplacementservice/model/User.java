@@ -37,9 +37,6 @@ public class User implements UserDetails {
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
-    @Column(name = "rating")
-    private double rating;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
     private Image avatar;
@@ -53,20 +50,11 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     public boolean isAdmin() {
-        return roles.contains(Role.ADMIN);
+        return roles.contains(Role.ROLE_ADMIN);
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Ad> ads = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author")
-    private List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "seller")
-    private List<Deal> sellDeals = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "buyer")
-    private List<Deal> buyDeals = new ArrayList<>();
 
     @PrePersist
     private void init() {

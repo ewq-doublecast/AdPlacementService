@@ -35,7 +35,7 @@ public class UserService implements UserDetailsService {
         if (userRepository.findByPhoneNumber(user.getPhoneNumber()) != null)
             return false;
 
-        user.getRoles().add(Role.USER);
+        user.getRoles().add(Role.ROLE_ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Saving new User with email: {}", userEmail);
         userRepository.save(user);

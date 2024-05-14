@@ -52,9 +52,6 @@ public class Ad {
     @JoinColumn
     private Category category;
 
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "ad")
-    private Deal deal;
-
     @PrePersist
     private void init() {
         createdAt = LocalDateTime.now();

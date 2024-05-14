@@ -10,7 +10,6 @@
 <div>Подробная информация о пользователе: <span th:text="${user.firstName}"></span></div>
 <div>Номер телефона: <span th:text="${user.phoneNumber}"></span></div>
 <div>Email: <span th:text="${user.email}"></span></div>
-<div>Средний рейтинг пользователя: <span th:text="${user.rating}"></span></div>
 <h4>Товары пользователя <span th:text="${user.firstName}"></span></h4>
 <div th:if="${not #lists.isEmpty(ads)}">
     <div th:each="ad : ${ads}">
