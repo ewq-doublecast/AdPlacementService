@@ -26,8 +26,9 @@ public class Ad {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    @Column(name = "city")
-    private String city;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn
+    private City city;
 
     @Column(name = "price")
     private Integer price;

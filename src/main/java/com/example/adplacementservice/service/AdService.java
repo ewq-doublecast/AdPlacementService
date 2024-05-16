@@ -89,14 +89,14 @@ public class AdService {
         return adRepository.findByOnModerationIsTrue();
     }
 
-    public void update(Integer adId, Ad updatedAd,
+    public void update(Ad updatedAd,
                        MultipartFile file1,
                        MultipartFile file2,
                        MultipartFile file3,
                        Principal principal) throws IOException {
 
-        Ad adFromDb = adRepository.findById(adId)
-                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + adId));
+        Ad adFromDb = adRepository.findById(updatedAd.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + updatedAd.getId()));
 
         if (!adFromDb.getUser().getUsername().equals(principal.getName())) {
             return;
@@ -108,7 +108,7 @@ public class AdService {
         adFromDb.setPrice(updatedAd.getPrice());
         adFromDb.setCategory(updatedAd.getCategory());
 
-        List<Image> existingImages = imageRepository.findByAdId(adId);
+        List<Image> existingImages = imageRepository.findByAdId(updatedAd.getId());
 
         if (file1 != null && file1.getSize() > 0) {
             Image image1 = imageMapper.toEntity(file1);

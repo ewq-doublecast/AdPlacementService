@@ -1,26 +1,69 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Сервис размещения объявлений</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<h1>Создать объявление</h1>
-<hr>
-<form action="/ad/create" method="post" enctype="multipart/form-data">
-    Название: <input type="text" name="title"/><br><br>
-    Описание: <input type="text" name="description"/><br><br>
-    Город: <input type="text" name="city"/><br><br>
-    Цена: <input type="number" name="price"/><br><br>
-    Категория:
-    <select name="category">
-        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-    </select><br><br>
-    Первая фотография: <input type="file" name="file1"/><br><br>
-    Вторая фотография: <input type="file" name="file2"/><br><br>
-    Третья фотография: <input type="file" name="file3"/><br><br>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Создать"/>
-</form>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container">
+    <h1>Новое объявление</h1>
+    <form th:object="${ad}" action="/ad/create" method="post" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <label for="title" class="col-sm-2 col-from-label">Название объявления</label>
+            <div class="col-sm-6">
+                <input type="text" id="title" class="form-control" th:field="*{title}"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="description" class="col-sm-2 col-from-label">Описание объявления</label>
+            <div class="col-sm-6">
+                <textarea rows="6" id="description" class="form-control" th:field="*{description}"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="price" class="col-sm-2 col-from-label">Цена</label>
+            <div class="col-sm-6">
+                <input type="text" id="price" class="form-control" th:field="*{price}"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="city" class="col-sm-2 col-from-label">Город</label>
+            <div class="col-sm-6">
+                <select id="city" name="city" class="form-select">
+                    <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"
+                            th:field="*{city.id}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="category" class="col-sm-2 col-from-label">Категория</label>
+            <div class="col-sm-6">
+                <select id="category" name="category" class="form-select">
+                    <option th:each="category : ${categories}" th:value="${category.id}"
+                            th:text="${category.name}" th:field="*{category.id}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="file1" class="col-sm-2 col-form-label">Первая фотография</label>
+            <div class="col-sm-6">
+                <input class="form-control" type="file" id="file1" name="file1">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="file2" class="col-sm-2 col-form-label">Вторая фотография</label>
+            <div class="col-sm-6">
+                <input class="form-control col-sm-6" type="file" id="file2" name="file2">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="file3" class="col-sm-2 col-form-label">Третья фотография</label>
+            <div class="col-sm-6">
+                <input class="form-control col-sm-6" type="file" id="file3" name="file3">
+            </div>
+        </div>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <button class="btn btn-primary" type="submit">Создать</button>
+    </form>
+</div>
+<div th:replace="layout/layout :: foot"></div>
 </body>
 </html>

@@ -1,44 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Сервис размещения объявлений</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<h1>Сервис размещения объявлений</h1>
-<div th:if="${user.email != null}">
-    <h3>Имя: <span th:text="${user.firstName}"></span></h3>
-    <form action="/logout" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Выйти"/>
-    </form>
-    <div th:if="${user.isAdmin()}">
-        <a href="/admin">Панель администратора</a>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-5 g-4">
+        <div th:each="ad : ${ads}" th:if="${!ad.onModeration}" class="col">
+            <div class="card">
+                <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                    <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt=""
+                         class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                        <h5 th:text="${ad.title}" class="card-title"></h5>
+                    </a>
+                    <p th:text="${ad.price}" class="card-text"></p>
+                    <p th:text="${ad.city.name}" class="card-text"></p>
+                    <p th:text="${ad.createdAt}" class="card-text"></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div th:unless="${user.email != null}">
-    <a href="/login">Войти</a>
-</div>
-<hr>
-<form action="/" method="get">
-    Поиск по названию объявления: <input type="text" name="title"><br>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-    <input type="submit" value="Поиск"/>
-</form>
-<hr>
-<div th:each="ad : ${ads}">
-    <div th:if="${!ad.onModeration}">
-        <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt="" height="60px">
-        Название: <span th:text="${ad.title}"></span> |
-        Город: <span th:text="${ad.city}"></span> |
-        Цена: <span th:text="${ad.price}"></span> |
-        <a th:href="@{/ad/read/{id}(id=${ad.id})}">Подробнее</a>
-    </div>
-</div>
-<div th:if="${ads.isEmpty()}">
-    <div>Товаров нет</div>
-</div>
-<hr>
-<a href="/ad/create">Создать</a>
+<div th:replace="layout/layout :: foot"></div>
 </body>
 </html>

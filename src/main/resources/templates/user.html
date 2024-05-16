@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Сервис размещения объявлений</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<h1>Информация о пользователе</h1>
-<hr>
-<div>Подробная информация о пользователе: <span th:text="${user.firstName}"></span></div>
-<div>Номер телефона: <span th:text="${user.phoneNumber}"></span></div>
-<div>Email: <span th:text="${user.email}"></span></div>
-<h4>Товары пользователя <span th:text="${user.firstName}"></span></h4>
-<div th:if="${not #lists.isEmpty(ads)}">
-    <div th:each="ad : ${ads}">
-        <p><b th:text="${ad.title}"></b> <span th:text="${ad.price}"></span> руб. | <a
-                th:href="@{/ad/read/{id}(id=${ad.id})}">Подробнее</a></p>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container mt-5">
+    <h1 class="mb-5">Информация о пользователе</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="card-text">Имя: <span th:text="${user.firstName}"></span></p>
+            <p class="card-text">Номер телефона: <span th:text="${user.phoneNumber}"></span></p>
+            <p class="card-text">Email: <span th:text="${user.email}"></span></p>
+        </div>
+    </div>
+
+    <h4 class="mb-4">Товары пользователя</h4>
+    <div th:if="${not #lists.isEmpty(ads)}" class="row row-cols-1 row-cols-md-5 g-4">
+        <div th:each="ad : ${ads}" class="col">
+            <div class="card">
+                <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                    <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt=""
+                         class="card-img-top">
+                </a>
+                <div class="card-body">
+                    <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                        <h5 th:text="${ad.title}" class="card-title"></h5>
+                    </a>
+                    <p th:text="${ad.price}" class="card-text"></p>
+                    <p th:text="${ad.city.name}" class="card-text"></p>
+                    <p th:text="${ad.createdAt}" class="card-text"></p>
+                    <a th:href="@{/ad/read/{id}(id=${ad.id})}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(ads)}" class="text-center">
+        <h2>Товаров нет</h2>
     </div>
 </div>
-<div th:if="${#lists.isEmpty(ads)}">
-    <h3>Товаров нет</h3>
-</div>
+<div th:replace="layout/layout :: foot"></div>
 </body>
 </html>
+

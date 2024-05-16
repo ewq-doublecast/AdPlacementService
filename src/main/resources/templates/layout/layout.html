@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="main(content)"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Сервис размещения объявлений</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Сервис размещения объявлений</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a sec:authorize="!isAuthenticated()" class="nav-link me-2" href="/login">Вход и регистрация</a>
+                        <form sec:authorize="isAuthenticated()" action="/logout" method="post" class="d-flex">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                            <button class="btn btn-link nav-link" type="submit">Выйти</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary" href="/ad/create">Разместить объявление</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <nav th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+         class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="nav-link" href="/admin">Панель администратора</a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <div class="dropdown me-2 mb-2">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Все категории
+                </button>
+                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+                    <li th:each="category : ${allCategories}"><a th:text="${category.name}" class="dropdown-item"
+                                                                 href="#"></a></li>
+                </ul>
+            </div>
+            <form class="d-flex w-100 me-2 mb-2" action="/" method="get">
+                <input class="form-control me-2" type="search" placeholder="Поиск по объявлениям"
+                       aria-label="Search" name="title">
+                <button class="btn btn-primary" type="submit">Найти</button>
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            </form>
+            <div class="dropdown mb-2">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Город
+                </button>
+                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
+                    <li th:each="city : ${allCities}"><a th:text="${city.name}" class="dropdown-item"
+                                                         href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div th:fragment="foot">
+    <div class="mb-5"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+</body>
+</html>

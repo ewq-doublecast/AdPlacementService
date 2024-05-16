@@ -1,42 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Сервис размещения объявлений</title>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<h1>Подробная информация</h1>
-<hr>
-<div th:each="img : ${images}">
-    <img th:src="@{/images/{id}(id=${img.id})}" height="60px"/><br><br>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-start">
+            <div th:if="${ad.user.getEmail() == user.getEmail()}" class="me-2">
+                <form th:action="@{/ad/edit/{adId}(adId=${ad.id})}" method="get" class="d-inline">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <button class="btn btn-primary me-2" type="submit">Обновить</button>
+                </form>
+                <form th:action="@{/ad/delete/{adId}(adId=${ad.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" class="btn btn-danger me-2" value="Удалить"/>
+                </form>
+                <form th:action="@{/ad/close/{adId}(adId=${ad.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" class="btn btn-secondary me-2" value="Закрыть"/>
+                </form>
+            </div>
+            <div th:if="${user.isAdmin() && ad.onModeration}">
+                <form th:action="@{/admin/ad/approve/{adId}(adId=${ad.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="submit" class="btn btn-success" value="Одобрить"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h2 th:text="${ad.title}"></h2>
+            <div id="carouselExampleControls" class="carousel slide mb-4 mt-4 w-50" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div th:each="img : ${images}" class="carousel-item active">
+                        <img th:src="@{/images/{id}(id=${img.id})}" class="d-block w-100" alt="..."/>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <h2 class="mt-4">Описание</h2>
+            <span th:text="${ad.description}"></span>
+        </div>
+        <div class="col-6">
+            <h2 th:text="'Цена: ' + ${ad.price} + ' ₽'"></h2>
+            <h2 th:text="'Город: ' + ${ad.city.name}"></h2>
+            <h2>
+                Контактное лицо:
+                <a th:href="@{/user/{userId}(userId=${ad.user.id})}" th:text="${ad.user.firstName}"></a>
+            </h2>
+        </div>
+    </div>
 </div>
-<div>
-    Название: <span th:text="${ad.title}"></span> <br>
-    Описание: <span th:text="${ad.description}"></span> <br>
-    Город: <span th:text="${ad.city}"></span> <br>
-    Цена: <span th:text="${ad.price}"></span> <br>
-    Автор: <a th:href="@{/user/{userId}(userId=${ad.user.id})}" th:text="${ad.user.firstName}"></a> <br>
-</div>
-<hr>
-<div th:if="${user.isAdmin() && ad.onModeration}">
-    <form th:action="@{/admin/ad/approve/{adId}(adId=${ad.id})}" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Одобрить"/>
-    </form>
-</div>
-<div th:if="${ad.user.getEmail() == user.getEmail()}">
-    <form th:action="@{/ad/edit/{adId}(adId=${ad.id})}" method="get">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Обновить"/>
-    </form>
-    <form th:action="@{/ad/delete/{adId}(adId=${ad.id})}" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Удалить"/>
-    </form>
-    <form th:action="@{/ad/close/{adId}(adId=${ad.id})}" method="post">
-        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <input type="submit" value="Закрыть"/>
-    </form>
-</div>
+<div th:replace="layout/layout :: foot"></div>
 </body>
 </html>
