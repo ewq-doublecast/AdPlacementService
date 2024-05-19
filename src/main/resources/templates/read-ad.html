@@ -15,7 +15,9 @@
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <input type="submit" class="btn btn-danger me-2" value="Удалить"/>
                 </form>
-                <form th:action="@{/ad/close/{adId}(adId=${ad.id})}" method="post" class="d-inline">
+                <form th:if="${ad.deal != null && ad.deal.status == dealStatus[0]}"
+                      th:action="@{/deal/close/{id}(id=${ad.id})}"
+                      method="post" class="d-inline">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <input type="submit" class="btn btn-secondary me-2" value="Закрыть"/>
                 </form>
@@ -58,6 +60,23 @@
                 Контактное лицо:
                 <a th:href="@{/user/{userId}(userId=${ad.user.id})}" th:text="${ad.user.firstName}"></a>
             </h2>
+            <div th:if="${ad.deal == null && ad.user != user}">
+                <form th:action="@{/deal/create}" method="post" th:object="${dealDto}">
+                    <input type="hidden" th:value="${ad.id}" th:field="*{adId}">
+                    <input type="hidden" th:value="${ad.user.id}" th:field="*{sellerId}">
+                    <input type="hidden" th:value="${user.id}" th:field="*{buyerId}">
+                    <input type="radio" id="online"
+                           th:value="${T(com.example.adplacementservice.model.enums.PaymentMethod).ONLINE}"
+                           th:field="*{paymentMethod}"/>
+                    <label for="online">Онлайн оплата</label><br>
+                    <input type="radio" id="cash"
+                           th:value="${T(com.example.adplacementservice.model.enums.PaymentMethod).CASH}"
+                           th:field="*{paymentMethod}"/>
+                    <label for="cash">Оплата наличными</label><br>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <button class="btn btn-success" type="submit">Купить</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

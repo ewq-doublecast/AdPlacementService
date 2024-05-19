@@ -1,12 +1,12 @@
 package com.example.adplacementservice.controller;
 
+import com.example.adplacementservice.dto.DealDto;
+import com.example.adplacementservice.mapper.DealMapper;
 import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Category;
 import com.example.adplacementservice.model.City;
-import com.example.adplacementservice.service.AdService;
-import com.example.adplacementservice.service.CategoryService;
-import com.example.adplacementservice.service.CityService;
-import com.example.adplacementservice.service.UserService;
+import com.example.adplacementservice.model.enums.DealStatus;
+import com.example.adplacementservice.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +25,8 @@ public class AdController {
     private final UserService userService;
     private final CityService cityService;
     private final CategoryService categoryService;
+    private final DealService dealService;
+    private final DealMapper dealMapper;
 
     @GetMapping("/")
     public String readAllAds(@RequestParam(name = "title", required = false) String title,
@@ -32,7 +34,7 @@ public class AdController {
                              Principal principal) {
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("ads", adService.getAllAds(title));
+        model.addAttribute("ads", adService.getAdsWhereDealIsNull());
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "read-all-ads";
     }
@@ -40,9 +42,24 @@ public class AdController {
     @GetMapping("/ad/read/{id}")
     public String readAd(@PathVariable Integer id, Model model, Principal principal) {
         Ad ad = adService.getAd(id);
+
+        DealDto dealDto = dealMapper.toDto(dealService.getDealByAdId(id));
+
+        if (dealDto == null) {
+            dealDto = new DealDto();
+            dealDto.setAdId(id);
+            dealDto.setSellerId(ad.getUser().getId());
+
+            if (principal != null) {
+                dealDto.setBuyerId(userService.getUserByPrincipal(principal).getId());
+            }
+        }
+
         model.addAttribute("ad", ad);
         model.addAttribute("images", ad.getImages());
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("dealDto", dealDto);
+        model.addAttribute("dealStatus", DealStatus.values());
         return "read-ad";
     }
 
@@ -66,7 +83,6 @@ public class AdController {
         adService.save(ad, file1, file2, file3, principal);
         return "redirect:/";
     }
-
 
     @GetMapping("/ad/edit/{id}")
     public String updateAd(Model model, @PathVariable Integer id, Principal principal) {
@@ -95,16 +111,6 @@ public class AdController {
     public String deleteAd(@PathVariable int id) {
         adService.delete(id);
         return "redirect:/";
-    }
-
-    @ModelAttribute("allCities")
-    public List<City> getAllCities() {
-        return cityService.getAllCities();
-    }
-
-    @ModelAttribute("allCategories")
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
     }
 
 }

@@ -16,7 +16,7 @@
     <h4 class="mb-4">Товары пользователя</h4>
     <div th:if="${not #lists.isEmpty(ads)}" class="row row-cols-1 row-cols-md-5 g-4">
         <div th:each="ad : ${ads}" class="col">
-            <div class="card">
+            <div class="card" th:if="${(currentUserId != user.id && ad.deal == null) || (currentUserId == user.id)}">
                 <a th:href="@{/ad/read/{id}(id=${ad.id})}">
                     <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt=""
                          class="card-img-top">
@@ -36,6 +36,29 @@
     <div th:if="${#lists.isEmpty(ads)}" class="text-center">
         <h2>Товаров нет</h2>
     </div>
+    <div th:if="${currentUserId == user.id}">
+        <h4 class="mb-4 mt-4">Купленные товары</h4>
+        <div th:if="${not #lists.isEmpty(purchasedAds)}" class="row row-cols-1 row-cols-md-5 g-4">
+            <div th:each="ad : ${purchasedAds}" class="col">
+                <div class="card">
+                    <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                        <img th:src="@{/images/{id}(id=${ad.previewImageId})}" alt=""
+                             class="card-img-top">
+                    </a>
+                    <div class="card-body">
+                        <a th:href="@{/ad/read/{id}(id=${ad.id})}">
+                            <h5 th:text="${ad.title}" class="card-title"></h5>
+                        </a>
+                        <p th:text="${ad.price}" class="card-text"></p>
+                        <p th:text="${ad.city.name}" class="card-text"></p>
+                        <p th:text="${ad.createdAt}" class="card-text"></p>
+                        <a th:href="@{/ad/read/{id}(id=${ad.id})}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <div th:replace="layout/layout :: foot"></div>
 </body>

@@ -14,6 +14,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" class="btn btn-link nav-link"
+                           th:href="@{/user/{userId}(userId=${currentUserId})}">Профиль</a>
+                    </li>
+                    <li class="nav-item">
                         <a sec:authorize="!isAuthenticated()" class="nav-link me-2" href="/login">Вход и регистрация</a>
                         <form sec:authorize="isAuthenticated()" action="/logout" method="post" class="d-flex">
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}">

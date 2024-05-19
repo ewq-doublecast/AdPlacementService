@@ -1,10 +1,9 @@
 package com.example.adplacementservice.controller;
 
-import com.example.adplacementservice.model.Category;
-import com.example.adplacementservice.model.City;
+import com.example.adplacementservice.model.Deal;
 import com.example.adplacementservice.model.User;
-import com.example.adplacementservice.service.CategoryService;
-import com.example.adplacementservice.service.CityService;
+import com.example.adplacementservice.service.AdService;
+import com.example.adplacementservice.service.DealService;
 import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,8 +22,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final CityService cityService;
-    private final CategoryService categoryService;
+    private final AdService adService;
+    private final DealService dealService;
 
     @GetMapping("/login")
     public String login() {
@@ -45,20 +46,23 @@ public class UserController {
     }
 
     @GetMapping("/user/{user}")
-    public String user(@PathVariable User user, Model model) {
+    public String user(@PathVariable User user, Model model, Principal principal) {
         model.addAttribute("user", user);
         model.addAttribute("ads", user.getAds());
+        User guest = userService.getUserByPrincipal(principal);
+
+        if (guest.getEmail().equals(user.getEmail())) {
+            List<Deal> deals = dealService.getAllPurchasedDeals(guest.getId());
+            List<Integer> dealIds = new ArrayList<>();
+            for (Deal deal : deals) {
+                dealIds.add(deal.getId());
+            }
+            model.addAttribute("purchasedAds", adService.getAdsByDealIds(dealIds));
+        } else {
+            model.addAttribute("purchasedAds", null);
+        }
+
         return "user";
-    }
-
-    @ModelAttribute("allCities")
-    public List<City> getAllCities() {
-        return cityService.getAllCities();
-    }
-
-    @ModelAttribute("allCategories")
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
     }
 
 }

@@ -60,10 +60,7 @@ public class AdService {
         adRepository.save(adFromDb);
     }
 
-    public List<Ad> getAllAds(String title) {
-        if (title != null)
-            return adRepository.findByTitle(title);
-
+    public List<Ad> getAllAds() {
         return adRepository.findAll();
     }
 
@@ -87,6 +84,14 @@ public class AdService {
 
     public List<Ad> getAdsOnModeration() {
         return adRepository.findByOnModerationIsTrue();
+    }
+
+    public List<Ad> getAdsWhereDealIsNull() {
+        return adRepository.findByDealIdIsNull();
+    }
+
+    public List<Ad> getAdsByDealIds(List<Integer> dealIds) {
+        return adRepository.findByDealIds(dealIds);
     }
 
     public void update(Ad updatedAd,
@@ -151,6 +156,7 @@ public class AdService {
         existingImage.setBytes(image.getBytes());
         imageRepository.save(existingImage);
     }
+
 
 }
 

@@ -26,6 +26,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(username);
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     public boolean save(User user) {
         String userEmail = user.getEmail();
 
@@ -47,6 +51,10 @@ public class UserService implements UserDetailsService {
             return new User();
 
         return userRepository.findByEmail(principal.getName());
+    }
+
+    public User getUserById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
 }

@@ -53,6 +53,10 @@ public class Ad {
     @JoinColumn
     private Category category;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "deal_id", referencedColumnName = "id")
+    private Deal deal;
+
     @PrePersist
     private void init() {
         createdAt = LocalDateTime.now();
