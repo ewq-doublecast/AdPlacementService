@@ -10,6 +10,7 @@ import com.example.adplacementservice.repository.ImageRepository;
 import com.example.adplacementservice.specification.AdSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,13 +89,23 @@ public class AdService {
         return adRepository.findByOnModerationIsTrue();
     }
 
-    public List<Ad> getAdsWhereDealIsNull(String searchText, Integer cityId, Integer categoryId) {
+    public List<Ad> getAdsWhereDealIsNull(String searchText, Integer cityId, Integer categoryId, String sortBy) {
         Specification<Ad> spec = Specification.where(AdSpecifications.hasSearchText(searchText))
                 .and(AdSpecifications.hasCity(cityId))
                 .and(AdSpecifications.hasCategory(categoryId))
                 .and(AdSpecifications.hasNoDeal());
 
-        return adRepository.findAll(spec);
+        Sort sort = getSort(sortBy);
+
+        return adRepository.findAll(spec, sort);
+    }
+
+    private Sort getSort(String sortBy) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        if ("oldest".equals(sortBy)) {
+            sort = Sort.by(Sort.Direction.ASC, "createdAt");
+        }
+        return sort;
     }
 
     public List<Ad> getAdsByDealIds(List<Integer> dealIds) {

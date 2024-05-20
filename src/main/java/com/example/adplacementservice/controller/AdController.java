@@ -32,11 +32,14 @@ public class AdController {
     public String readAllAds(@RequestParam(required = false) String searchText,
                              @RequestParam(required = false) Integer cityId,
                              @RequestParam(required = false) Integer categoryId,
+                             @RequestParam(required = false) String sortBy,
                              Model model,
                              Principal principal) {
+
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("ads", adService.getAdsWhereDealIsNull(searchText, cityId, categoryId));
+        model.addAttribute("ads", adService.getAdsWhereDealIsNull(searchText, cityId, categoryId, sortBy));
+        model.addAttribute("sortBy", sortBy);
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "read-all-ads";
     }

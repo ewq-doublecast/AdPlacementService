@@ -61,6 +61,14 @@
                     </select>
                 </div>
 
+                <div class="dropdown me-2 mb-2">
+                    <select class="form-select" name="sortBy">
+                        <option value="">По умолчанию</option>
+                        <option value="newest" th:selected="'newest' == sortBy">Сначала новые</option>
+                        <option value="oldest" th:selected="'oldest' == sortBy">Сначала старые</option>
+                    </select>
+                </div>
+
                 <input class="form-control me-2" type="search" placeholder="Поиск по объявлениям"
                        aria-label="Search" name="searchText" th:value="${searchText}">
 
