@@ -29,12 +29,14 @@ public class AdController {
     private final DealMapper dealMapper;
 
     @GetMapping("/")
-    public String readAllAds(@RequestParam(name = "title", required = false) String title,
+    public String readAllAds(@RequestParam(required = false) String searchText,
+                             @RequestParam(required = false) Integer cityId,
+                             @RequestParam(required = false) Integer categoryId,
                              Model model,
                              Principal principal) {
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("ads", adService.getAdsWhereDealIsNull());
+        model.addAttribute("ads", adService.getAdsWhereDealIsNull(searchText, cityId, categoryId));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "read-all-ads";
     }

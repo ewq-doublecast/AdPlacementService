@@ -39,34 +39,34 @@
     </nav>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <div class="dropdown me-2 mb-2">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Все категории
-                </button>
-                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
-                    <li th:each="category : ${allCategories}"><a th:text="${category.name}" class="dropdown-item"
-                                                                 href="#"></a></li>
-                </ul>
-            </div>
             <form class="d-flex w-100 me-2 mb-2" action="/" method="get">
+                <div class="dropdown me-2 btn-primary">
+                    <select class="form-select" name="categoryId">
+                        <option value="">Все категории</option>
+                        <option th:each="category : ${allCategories}"
+                                th:value="${category.id}"
+                                th:text="${category.name}"
+                                th:selected="${category.id == categoryId}"></option>
+                    </select>
+                </div>
+
+                <div class="dropdown me-2">
+                    <select class="form-select" name="cityId">
+                        <option value="">Город</option>
+                        <option th:each="city : ${allCities}"
+                                th:value="${city.id}"
+                                th:text="${city.name}"
+                                th:selected="${city.id == cityId}"></option>
+                        </option>
+                    </select>
+                </div>
+
                 <input class="form-control me-2" type="search" placeholder="Поиск по объявлениям"
-                       aria-label="Search" name="title">
+                       aria-label="Search" name="searchText" th:value="${searchText}">
+
                 <button class="btn btn-primary" type="submit">Найти</button>
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}">
             </form>
-            <div class="dropdown mb-2">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton2"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    Город
-                </button>
-                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuButton2">
-                    <li th:each="city : ${allCities}"><a th:text="${city.name}" class="dropdown-item"
-                                                         href="#"></a></li>
-                </ul>
-            </div>
         </div>
     </nav>
 </div>
