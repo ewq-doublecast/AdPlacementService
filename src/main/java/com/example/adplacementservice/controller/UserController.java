@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,10 +48,11 @@ public class UserController {
 
     @GetMapping("/user/{user}")
     public String user(@PathVariable User user, Model model, Principal principal) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        model.addAttribute("formatter", formatter);
         model.addAttribute("user", user);
         model.addAttribute("ads", user.getAds());
         User guest = userService.getUserByPrincipal(principal);
-
         if (guest.getEmail().equals(user.getEmail())) {
             List<Deal> deals = dealService.getAllPurchasedDeals(guest.getId());
             List<Integer> dealIds = new ArrayList<>();

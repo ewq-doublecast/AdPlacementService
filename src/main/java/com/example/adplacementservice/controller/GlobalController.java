@@ -23,7 +23,6 @@ public class GlobalController {
     private final CityService cityService;
     private final CategoryService categoryService;
 
-
     @ModelAttribute("allCities")
     public List<City> getAllCities() {
         return cityService.getAllCities();

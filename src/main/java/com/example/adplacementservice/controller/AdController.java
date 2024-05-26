@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -35,12 +36,13 @@ public class AdController {
                              @RequestParam(required = false) String sortBy,
                              Model model,
                              Principal principal) {
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         model.addAttribute("cities", cityService.getAllCities());
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("ads", adService.getAdsWhereDealIsNull(searchText, cityId, categoryId, sortBy));
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("formatter", formatter);
         return "read-all-ads";
     }
 

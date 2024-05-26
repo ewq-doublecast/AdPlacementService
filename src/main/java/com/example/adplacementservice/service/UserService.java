@@ -4,7 +4,6 @@ import com.example.adplacementservice.model.User;
 import com.example.adplacementservice.model.enums.Role;
 import com.example.adplacementservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -41,7 +39,6 @@ public class UserService implements UserDetailsService {
 
         user.getRoles().add(Role.ROLE_ADMIN);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        log.info("Saving new User with email: {}", userEmail);
         userRepository.save(user);
         return true;
     }

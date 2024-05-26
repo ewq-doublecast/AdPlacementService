@@ -27,7 +27,7 @@
                     </a>
                     <p th:text="${ad.price}" class="card-text"></p>
                     <p th:text="${ad.city.name}" class="card-text"></p>
-                    <p th:text="${ad.createdAt}" class="card-text"></p>
+                    <p th:text="${ad.createdAt.format(formatter)}" class="card-text"></p>
                     <a th:href="@{/ad/read/{id}(id=${ad.id})}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
@@ -51,14 +51,13 @@
                         </a>
                         <p th:text="${ad.price}" class="card-text"></p>
                         <p th:text="${ad.city.name}" class="card-text"></p>
-                        <p th:text="${ad.createdAt}" class="card-text"></p>
+                        <p th:text="${ad.createdAt.format(formatter)}" class="card-text"></p>
                         <a th:href="@{/ad/read/{id}(id=${ad.id})}" class="btn btn-primary">Подробнее</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 <div th:replace="layout/layout :: foot"></div>
 </body>
