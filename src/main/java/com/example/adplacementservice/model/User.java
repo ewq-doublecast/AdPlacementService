@@ -44,6 +44,9 @@ public class User implements UserDetails {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "avg_rating")
+    private Double avgRating;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -55,6 +58,20 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Ad> ads = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "author")
+    private List<Review> authorReviews = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "seller")
+    private List<Review> myReviews = new ArrayList<>();
+
+    public void addSellerReview(Review review) {
+        myReviews.add(review);
+    }
+
+    public void addAuthorReview(Review review) {
+        authorReviews.add(review);
+    }
 
     @PrePersist
     private void init() {

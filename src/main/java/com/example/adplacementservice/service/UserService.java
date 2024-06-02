@@ -1,5 +1,6 @@
 package com.example.adplacementservice.service;
 
+import com.example.adplacementservice.model.Review;
 import com.example.adplacementservice.model.User;
 import com.example.adplacementservice.model.enums.Role;
 import com.example.adplacementservice.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,4 +56,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public void calculateAndSetUserAvgRating(User user) {
+        List<Review> userReviews = user.getMyReviews();
+        if (userReviews != null) {
+            Double rating = 0.0;
+            for (Review review : userReviews) {
+                rating += review.getRating();
+            }
+            user.setAvgRating(rating / userReviews.size());
+        }
+    }
 }

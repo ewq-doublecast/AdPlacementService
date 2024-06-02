@@ -1,6 +1,7 @@
 package com.example.adplacementservice.controller;
 
 import com.example.adplacementservice.dto.DealDto;
+import com.example.adplacementservice.dto.ReviewDto;
 import com.example.adplacementservice.mapper.DealMapper;
 import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Category;
@@ -62,6 +63,12 @@ public class AdController {
             }
         }
 
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setAdId(id);
+        reviewDto.setSellerId(ad.getUser().getId());
+        reviewDto.setAuthorId(userService.getUserByPrincipal(principal).getId());
+
+        model.addAttribute("reviewDto", reviewDto);
         model.addAttribute("ad", ad);
         model.addAttribute("images", ad.getImages());
         model.addAttribute("user", userService.getUserByPrincipal(principal));

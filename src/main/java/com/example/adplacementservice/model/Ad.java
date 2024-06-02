@@ -57,6 +57,12 @@ public class Ad {
     @JoinColumn(name = "deal_id", referencedColumnName = "id")
     private Deal deal;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "review_id", referencedColumnName = "id")
+    private Review review;
+
+    private boolean reviewWritten = false;
+
     @PrePersist
     private void init() {
         createdAt = LocalDateTime.now();
