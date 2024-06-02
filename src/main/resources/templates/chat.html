@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-list">
+        <ul>
+            <li th:each="chat : ${chats}">
+                <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
+                    <span th:text="${chat.id}">Chat ID</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="chat-window">
+        <div id="messages">
+            <div th:each="message : ${chat.messages}">
+                <div th:if="${message.sender.id == currentUser.id}" class="sent-message" th:text="${message.content}">
+                    Sent message
+                </div>
+                <div th:if="${message.sender.id != currentUser.id}" class="received-message"
+                     th:text="${message.content}">Received message
+                </div>
+            </div>
+        </div>
+        <form id="sendMessage" th:action="@{/app/chat}" method="post">
+            <input type="hidden" id="chatId" th:value="${chat.id}"/>
+            <input type="hidden" id="senderId" th:value="${currentUser.id}"/>
+            <textarea id="messageContent" name="content"></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const socket = new SockJS('/ws');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, (frame) => {
+            console.log('Connected: ' + frame);
+
+            stompClient.subscribe('/topic/messages', (messageOutput) => {
+                const message = JSON.parse(messageOutput.body);
+                showMessage(message);
+            });
+
+            document.querySelector('#sendMessage').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const messageContent = document.querySelector('#messageContent').value;
+                const chatId = document.querySelector('#chatId').value;
+                const senderId = document.querySelector('#senderId').value;
+
+                stompClient.send("/app/chat", {}, JSON.stringify({chatId, senderId, content: messageContent}));
+            });
+        });
+    });
+
+    function showMessage(message) {
+        const messageElement = document.createElement('div');
+        if (message.senderId === parseInt(document.querySelector('#senderId').value)) {
+            messageElement.classList.add('sent-message');
+        } else {
+            messageElement.classList.add('received-message');
+        }
+        messageElement.appendChild(document.createTextNode(message.content));
+        document.querySelector('#messages').appendChild(messageElement);
+    }
+</script>
+</body>
+</html>

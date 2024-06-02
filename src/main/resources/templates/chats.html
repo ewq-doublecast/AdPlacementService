@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chats</title>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-list">
+        <ul>
+            <li th:each="chat : ${chats}">
+                <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
+                    <span th:text="${chat.id}">Chat ID</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="chat-window">
+        <p>Select a chat to start messaging.</p>
+    </div>
+</div>
+</body>
+</html>
