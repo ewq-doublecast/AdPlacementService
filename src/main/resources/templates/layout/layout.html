@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Сервис размещения объявлений</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
 </head>
 <body>
 <div th:fragment="navbar">
@@ -16,6 +17,10 @@
                     <li class="nav-item">
                         <a sec:authorize="isAuthenticated()" class="btn btn-link nav-link"
                            th:href="@{/user/{userId}(userId=${currentUserId})}">Профиль</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" class="btn btn-link nav-link"
+                           th:href="@{/chats}">Сообщения</a>
                     </li>
                     <li class="nav-item">
                         <a sec:authorize="!isAuthenticated()" class="nav-link me-2" href="/login">Вход и регистрация</a>

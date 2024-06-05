@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Chats</title>
-    <link rel="stylesheet" href="/css/style.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-</head>
+<head th:replace="layout/layout :: head"></head>
 <body>
-<div class="chat-container">
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container container-chats">
     <div class="chat-list">
         <ul>
             <li th:each="chat : ${chats}">
-                <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
-                    <span th:text="${chat.id}">Chat ID</span>
-                </a>
+                <div class="chat-card">
+                    <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
+                        <h3 th:text="${chat.getNotCurrentUser(currentUser).getFirstName()}"></h3>
+                    </a>
+                    <p th:text="${chat.messages.get(chats.size() - 1).content}"></p>
+                </div>
             </li>
         </ul>
     </div>
-    <div class="chat-window">
-        <p>Select a chat to start messaging.</p>
+    <div class="chat-window" th:if="${chats == null}">
+        <h2>Сообщений нет</h2>
     </div>
 </div>
+<div th:replace="layout/layout :: foot"></div>
 </body>
 </html>

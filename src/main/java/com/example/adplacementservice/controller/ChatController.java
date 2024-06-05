@@ -12,6 +12,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
@@ -25,7 +27,8 @@ public class ChatController {
     public MessageDto sendMessage(MessageDto messageDTO) {
         Chat chat = chatRepository.findById(messageDTO.getChatId()).orElseThrow();
         User sender = userRepository.findById(messageDTO.getSenderId()).orElseThrow();
-        Message message = new Message(null, chat, sender, messageDTO.getContent(), null);
+        User recipient = userRepository.findById(messageDTO.getRecipientId()).orElseThrow();
+        Message message = new Message(null, chat, sender, recipient, messageDTO.getContent(), LocalDateTime.now());
         messageRepository.save(message);
         return messageDTO;
     }

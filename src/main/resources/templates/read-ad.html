@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/layout :: head"></head>
 <body>
 <div th:replace="layout/layout :: navbar"></div>
@@ -88,6 +88,17 @@
                     <input type="number" id="reviewRating" class="form-control" th:field="*{rating}"><br>
                     <label for="reviewDescription" class="col-from-label">Текст отзыва</label><br>
                     <textarea id="reviewDescription" rows="6" class="form-control" th:field="*{description}"></textarea><br>
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <button class="btn btn-success" type="submit">Отправить</button>
+                </form>
+            </div>
+            <div sec:authorize="isAuthenticated()" th:if="${user != ad.user}"
+                 class="mt-3">
+                <form th:action="@{/chat/send-first-message}" method="post" th:object="${messageDto}">
+                    <input type="hidden" th:value="${ad.user.id}" th:field="*{recipientId}">
+                    <input type="hidden" th:value="${user.id}" th:field="*{senderId}">
+                    <label for="message" class="col-from-label">Спросить у продавца</label><br>
+                    <textarea id="message" rows="6" class="form-control" th:field="*{content}"></textarea><br>
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <button class="btn btn-success" type="submit">Отправить</button>
                 </form>
