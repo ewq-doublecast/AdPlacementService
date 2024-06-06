@@ -91,3 +91,11 @@ body {
     margin-top: 10px;
     color: #6c757d;
 }
+
+.review {
+    overflow-y: scroll;
+}
+
+.info {
+    height: 200px;
+}

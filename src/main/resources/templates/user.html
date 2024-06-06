@@ -3,14 +3,29 @@
 <head th:replace="layout/layout :: head"></head>
 <body>
 <div th:replace="layout/layout :: navbar"></div>
-<div class="container mt-5">
-    <h1 class="mb-5">Информация о пользователе</h1>
-    <div class="card mb-4">
-        <div class="card-body">
-            <p class="card-text">Имя: <span th:text="${user.firstName}"></span></p>
-            <p class="card-text">Номер телефона: <span th:text="${user.phoneNumber}"></span></p>
-            <p class="card-text">Email: <span th:text="${user.email}"></span></p>
-            <p class="card-text">Средний рейтинг продавца: <span th:text="${user.avgRating}"></span></p>
+<div class="container mt-3  ">
+    <div class="row mb-4">
+        <div class="col me-2">
+            <h1 class="mb-5">Информация о пользователе</h1>
+            <div class="card info">
+                <div class="card-body">
+                    <p class="card-text">Имя: <span th:text="${user.firstName}"></span></p>
+                    <p class="card-text">Номер телефона: <span th:text="${user.phoneNumber}"></span></p>
+                    <p class="card-text">Email: <span th:text="${user.email}"></span></p>
+                    <p class="card-text">Средний рейтинг продавца: <span th:text="${user.avgRating}"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col ms-2">
+            <h1 class="mb-5">Отзывы</h1>
+            <div class="card info">
+                <div class="card-body review">
+                    <div th:each="review : ${reviews}" class="card p-2">
+                        <p class="card-text">Оценка: <span th:text="${review.rating}"></span></p>
+                        <p class="card-text">Комментарий: <span th:text="${review.description}"></span></p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

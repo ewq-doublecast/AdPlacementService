@@ -2,7 +2,6 @@ package com.example.adplacementservice.service;
 
 import com.example.adplacementservice.dto.ReviewDto;
 import com.example.adplacementservice.mapper.ReviewMapper;
-import com.example.adplacementservice.model.Ad;
 import com.example.adplacementservice.model.Review;
 import com.example.adplacementservice.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +39,9 @@ public class ReviewService {
         reviewFromDb.setOnModeration(false);
         userService.calculateAndSetUserAvgRating(reviewFromDb.getSeller());
         reviewRepository.save(reviewFromDb);
+    }
+
+    public List<Review> getUserReviews(Integer userId) {
+        return reviewRepository.findBySellerId(userId);
     }
 }

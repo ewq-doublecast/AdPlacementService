@@ -1,9 +1,11 @@
 package com.example.adplacementservice.controller;
 
 import com.example.adplacementservice.model.Deal;
+import com.example.adplacementservice.model.Review;
 import com.example.adplacementservice.model.User;
 import com.example.adplacementservice.service.AdService;
 import com.example.adplacementservice.service.DealService;
+import com.example.adplacementservice.service.ReviewService;
 import com.example.adplacementservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,7 @@ public class UserController {
     private final UserService userService;
     private final AdService adService;
     private final DealService dealService;
+    private final ReviewService reviewService;
 
     @GetMapping("/login")
     public String login() {
@@ -49,9 +52,11 @@ public class UserController {
     @GetMapping("/user/{user}")
     public String user(@PathVariable User user, Model model, Principal principal) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        List<Review> reviews = reviewService.getUserReviews(user.getId());
         model.addAttribute("formatter", formatter);
         model.addAttribute("user", user);
         model.addAttribute("ads", user.getAds());
+        model.addAttribute("reviews", reviews);
         User guest = userService.getUserByPrincipal(principal);
         if (guest.getEmail().equals(user.getEmail())) {
             List<Deal> deals = dealService.getAllPurchasedDeals(guest.getId());
