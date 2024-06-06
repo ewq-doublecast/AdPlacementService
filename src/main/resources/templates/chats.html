@@ -11,7 +11,6 @@
                     <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
                         <h3 th:text="${chat.getNotCurrentUser(currentUser).getFirstName()}"></h3>
                     </a>
-                    <p th:text="${chat.messages.get(chats.size() - 1).content}"></p>
                 </div>
             </li>
         </ul>

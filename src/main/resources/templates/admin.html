@@ -33,9 +33,37 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div th:if="${#lists.isEmpty(ads)}">
-        <h2 class="mt-5">Объявлений на модерацию нет</h2>
+        <div th:if="${#lists.isEmpty(ads)}">
+            <h2 class="mt-5">Объявлений на модерацию нет</h2>
+        </div>
+        <table class="table table-bordered table-striped mt-5" th:if="${not #lists.isEmpty(reviews)}">
+            <thead class="table-dark">
+            <tr>
+                <th style="width: 20%;">Объявление</th>
+                <th style="width: 20%;">Оценка</th>
+                <th style="width: 20%;">Комментарий</th>
+                <th style="width: 15%;">Кем оставлен отзыв</th>
+                <th style="width: 15%;">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${reviews}" th:if="${review.onModeration}">
+                <td><a th:text="${review.ad.title}" th:href="@{/ad/read/{id}(id=${review.ad.id})}"></a></td>
+                <td th:text="${review.rating}"></td>
+                <td th:text="${review.description}">Комментарий</td>
+                <td><a th:text="${review.author.firstName}" th:href="@{/user/{userId}(userId=${review.author.id})}"></a></td>
+                <td>
+                    <form th:action="@{/admin/review/approve/{id}(id=${review.id})}" method="post">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn-success">Одобрить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(reviews)}">
+            <h2 class="mt-5">Отзывов на модерацию нет</h2>
+        </div>
     </div>
 </div>
 <div th:replace="layout/layout :: foot"></div>
