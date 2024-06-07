@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container mt-4">
+    <div class="chat-list">
+        <ul>
+            <li>
+                <div class="chat-card">
+                    <a th:href="@{/delivery/sent-deliveries/{userId}(userId=${currentUserId})}">
+                        <h3 th:text="'Отправленные товары'"></h3>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="chat-card">
+                    <a th:href="@{/delivery/recipient-deliveries/{userId}(userId=${currentUserId})}">
+                        <h3 th:text="'Полученные товары'"></h3>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div th:replace="layout/layout :: foot"></div>
+</body>
+</html>

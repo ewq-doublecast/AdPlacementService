@@ -4,12 +4,13 @@
 <body>
 <div th:replace="layout/layout :: navbar"></div>
 <div class="container container-chats">
+    <h2>Чаты</h2>
     <div class="chat-list">
         <ul>
             <li th:each="chat : ${chats}">
                 <div class="chat-card">
                     <a th:href="@{/chats/{chatId}(chatId=${chat.id})}">
-                        <h3 th:text="${chat.getNotCurrentUser(currentUser).getFirstName()}"></h3>
+                        <h3 th:text="'Пользователь: ' + ${chat.getNotCurrentUser(currentUser).getFirstName()}"></h3>
                     </a>
                 </div>
             </li>

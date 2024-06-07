@@ -22,7 +22,7 @@ public class DealService {
     }
 
     public Deal getDealByAdId(Integer adId) {
-        return dealRepository.findDealByAdId(adId);
+        return dealRepository.findByAdId(adId);
     }
 
     public List<Deal> getAllPurchasedDeals(Integer buyerId) {
@@ -30,7 +30,7 @@ public class DealService {
     }
 
     public void close(Integer id) {
-        Deal dealFromDb = dealRepository.findDealByAdId(id);
+        Deal dealFromDb = dealRepository.findByAdId(id);
 
         if (dealFromDb != null) {
             dealFromDb.setStatus(DealStatus.CLOSED);

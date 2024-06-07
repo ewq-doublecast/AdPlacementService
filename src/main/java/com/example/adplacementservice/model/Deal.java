@@ -18,13 +18,13 @@ public class Deal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Ad ad;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User seller;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private User buyer;
 
     @Enumerated(EnumType.STRING)

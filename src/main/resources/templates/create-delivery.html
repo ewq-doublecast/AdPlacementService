@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container">
+    <h1>Оформить доставку</h1>
+    <form th:object="${delivery}" action="/delivery/create" method="post">
+        <div class="row mb-3">
+            <label for="senderAddress" class="col-sm-2 col-from-label">Укажите адрес отправителя</label>
+            <div class="col-sm-6">
+                <input type="text" id="senderAddress" class="form-control" th:field="*{senderAddress}"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="senderIndex" class="col-sm-2 col-from-label">Укажите почтовый индекс отправителя</label>
+            <div class="col-sm-6">
+                <input type="text" id="senderIndex" class="form-control" th:field="*{senderIndex}">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipientAddress" class="col-sm-2 col-from-label">Укажите адрес получателя</label>
+            <div class="col-sm-6">
+                <input type="text" id="recipientAddress" class="form-control" th:field="*{recipientAddress}"/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="recipientIndex" class="col-sm-2 col-from-label">Укажите почтовый индекс получателя</label>
+            <div class="col-sm-6">
+                <input type="text" id="recipientIndex" class="form-control" th:field="*{recipientIndex}"/>
+            </div>
+        </div>
+        <input type="hidden" name="adId" th:value="${ad.id}">
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+        <button class="btn btn-primary" type="submit">Создать</button>
+    </form>
+</div>
+<div th:replace="layout/layout :: foot"></div>
+</body>
+</html>

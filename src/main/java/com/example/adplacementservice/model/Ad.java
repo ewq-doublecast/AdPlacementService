@@ -63,6 +63,10 @@ public class Ad {
 
     private boolean reviewWritten = false;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Delivery delivery;
+
     @PrePersist
     private void init() {
         createdAt = LocalDateTime.now();

@@ -47,6 +47,12 @@ public class User implements UserDetails {
     @Column(name = "avg_rating")
     private Double avgRating;
 
+    @OneToMany(mappedBy = "sender")
+    private List<Delivery> sentDeliveries = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient")
+    private List<Delivery> receivedDeliveries = new ArrayList<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)

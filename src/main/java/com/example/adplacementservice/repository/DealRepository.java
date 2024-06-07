@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface DealRepository extends JpaRepository<Deal, Integer> {
 
-    Deal findDealByAdId(Integer id);
+    Deal findByAdId(Integer id);
 
     List<Deal> findByBuyerId(Integer userId);
 
