@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+<div th:replace="layout/layout :: navbar"></div>
+<div class="container">
+    <div class="col-6 card p-4">
+        <h1 class="mt-2 mb-2">Информация о доставке</h1>
+        <div class="row">
+            <div class="col">
+                <span>Адрес отправителя: </span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.senderAddress}"></span>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Почтовый индекс отправителя: </span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.senderIndex}"></span>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Адрес получателя: </span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.recipientAddress}"></span>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Почтовый индекс получателя</span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.recipientIndex}"></span>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Отправитель: </span>
+            </div>
+            <div class="col">
+                <a th:href="@{/user/{userId}(userId=${delivery.sender.id})}"
+                   th:text="${delivery.sender.firstName}"></a>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Получатель: </span>
+            </div>
+            <div class="col">
+                <a th:href="@{/user/{userId}(userId=${delivery.recipient.id})}"
+                   th:text="${delivery.recipient.firstName}"></a>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Объявление</span>
+            </div>
+            <div class="col">
+                <a th:href="@{/ad/read/{adId}(adId=${delivery.ad.id})}"
+                   th:text="${delivery.ad.title}"></a>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Статус</span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.status}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="layout/layout :: foot"></div>
+</body>
+</html>

@@ -72,4 +72,11 @@ public class DeliveryController {
         return "redirect:/delivery/deliveries";
     }
 
+    @GetMapping("/delivery/{deliveryId}")
+    public String viewDelivery(@PathVariable Integer deliveryId, Model model) {
+        Delivery delivery = deliveryService.getDelivery(deliveryId);
+        model.addAttribute("delivery", delivery);
+        return "delivery";
+    }
+
 }
