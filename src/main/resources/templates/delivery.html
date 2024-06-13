@@ -74,10 +74,19 @@
         </div>
         <div class="row">
             <div class="col">
-                <span>Статус</span>
+                <span>Статус доставки</span>
             </div>
             <div class="col">
-                <span th:text="${delivery.status}"></span>
+                <span th:text="${delivery.getDeliveryStatus}"></span>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span>Способ доставки</span>
+            </div>
+            <div class="col">
+                <span th:text="${delivery.getDeliveryMethod()}"></span>
             </div>
         </div>
     </div>

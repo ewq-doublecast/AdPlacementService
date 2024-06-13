@@ -28,7 +28,7 @@ public class DeliveryService {
 
     public void changeDeliveryStatus(Integer deliveryId, DeliveryStatus deliveryStatus) {
         Delivery delivery = deliveryRepository.getReferenceById(deliveryId);
-        delivery.setStatus(deliveryStatus);
+        delivery.setDeliveryStatus(deliveryStatus);
         deliveryRepository.save(delivery);
     }
 

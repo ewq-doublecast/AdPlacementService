@@ -1,5 +1,6 @@
 package com.example.adplacementservice.model;
 
+import com.example.adplacementservice.model.enums.DeliveryMethod;
 import com.example.adplacementservice.model.enums.DeliveryStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,10 @@ public class Delivery {
     private String recipientIndex;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus status;
+    private DeliveryStatus deliveryStatus;
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryMethod deliveryMethod;
 
     @OneToOne(fetch = FetchType.EAGER)
     private Ad ad;

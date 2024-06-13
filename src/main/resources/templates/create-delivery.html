@@ -30,9 +30,19 @@
                 <input type="text" id="recipientIndex" class="form-control" th:field="*{recipientIndex}"/>
             </div>
         </div>
+        <div class="mb-3">
+            <input type="radio" id="online"
+                   th:value="${T(com.example.adplacementservice.model.enums.DeliveryMethod).MAIL}"
+                   th:field="*{deliveryMethod}"/>
+            <label for="online">Доставка почтой</label><br>
+            <input type="radio" id="cash"
+                   th:value="${T(com.example.adplacementservice.model.enums.DeliveryMethod).COURIER}"
+                   th:field="*{deliveryMethod}"/>
+            <label for="cash">Курьерская доставка</label><br>
+        </div>
         <input type="hidden" name="adId" th:value="${ad.id}">
         <input type="hidden" name="_csrf" th:value="${_csrf.token}">
-        <button class="btn btn-primary" type="submit">Создать</button>
+        <button class="btn btn-primary" type="submit">Оформить</button>
     </form>
 </div>
 <div th:replace="layout/layout :: foot"></div>

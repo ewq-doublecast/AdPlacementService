@@ -47,7 +47,7 @@ public class DeliveryController {
         newDelivery.setSender(sender);
         User recipient = ad.getDeal().getBuyer();
         newDelivery.setRecipient(recipient);
-        newDelivery.setStatus(DeliveryStatus.IN_PROCESS_SENDING);
+        newDelivery.setDeliveryStatus(DeliveryStatus.IN_PROCESS_SENDING);
         deliveryService.createDelivery(newDelivery);
         return "redirect:/delivery/sent-deliveries/" + newDelivery.getSender().getId();
     }
