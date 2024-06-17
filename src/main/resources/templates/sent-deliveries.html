@@ -21,7 +21,7 @@
             <td>
                 <a th:href="@{/ad/read/{adId}(adId=${delivery.ad.id})}" th:text="${delivery.ad.title}"></a>
             </td>
-            <td th:text="${delivery.getDeliveryStatus}"></td>
+            <td th:text="${deliveryStatus}"></td>
             <td th:if="${delivery.getDeliveryStatus == T(com.example.adplacementservice.model.enums.DeliveryStatus).IN_PROCESS_SENDING}">
                 <form th:action="@{/delivery/change-status/{deliveryId}(deliveryId=${delivery.id})}" method="post">
                     <input type="hidden"

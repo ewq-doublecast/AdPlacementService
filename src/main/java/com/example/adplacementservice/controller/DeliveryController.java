@@ -56,6 +56,21 @@ public class DeliveryController {
     public String viewSentDeliveries(@PathVariable Integer userId, Model model) {
         List<Delivery> sentDeliveries = deliveryService.getAllSentDeliveries(userId);
         model.addAttribute("sentDeliveries", sentDeliveries);
+        String status = "";
+        for (Delivery sentDelivery : sentDeliveries) {
+            switch (sentDelivery.getDeliveryStatus()) {
+                case IN_PROCESS_SENDING:
+                    status = "В процессе отправки";
+                    break;
+                case ON_THE_WAY:
+                    status = "В пути";
+                    break;
+                case RECEIVED:
+                    status = "Получено";
+                    break;
+            }
+        }
+        model.addAttribute("deliveryStatus", status);
         return "sent-deliveries";
     }
 
@@ -63,6 +78,21 @@ public class DeliveryController {
     public String viewRecipientDeliveries(@PathVariable Integer userId, Model model) {
         List<Delivery> recipientDeliveries = deliveryService.getAllRecipientDeliveries(userId);
         model.addAttribute("recipientDeliveries", recipientDeliveries);
+        String status = "";
+        for (Delivery recipientDelivery : recipientDeliveries) {
+            switch (recipientDelivery.getDeliveryStatus()) {
+                case IN_PROCESS_SENDING:
+                    status = "В процессе отправки";
+                    break;
+                case ON_THE_WAY:
+                    status = "В пути";
+                    break;
+                case RECEIVED:
+                    status = "Получено";
+                    break;
+            }
+        }
+        model.addAttribute("deliveryStatus", status);
         return "recipient-deliveries";
     }
 

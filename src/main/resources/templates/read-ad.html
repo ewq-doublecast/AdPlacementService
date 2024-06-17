@@ -21,7 +21,7 @@
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
                     <input type="submit" class="btn btn-secondary me-2" value="Закрыть"/>
                 </form>
-                <form th:if="${ad?.delivery == null}"
+                <form th:if="${ad?.delivery == null && ad?.deal != null}"
                       th:action="@{/delivery/create}"
                       method="get" class="d-inline">
                     <input type="hidden" name="adId" th:value="${ad.id}">
